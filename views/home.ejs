@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Share App</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 16px;
+    }
+
+    #upload-form-container {
+      text-align: center;
+    }
+
+    #upload-form {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 40px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    input[type="file"] {
+      display: none;  
+    }
+
+    label {
+      background-color: #5bc0de;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 18px; 
+    }
+
+    #file-name {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    #remove-file {
+      background-color: #d9534f;
+      color: #fff;
+      border: none;
+      padding: 15px 20px;  
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      margin-top: 15px;  
+      font-size: 16px;
+    }
+
+    #remove-file:hover {
+      background-color: #c9302c;
+    }
+
+    #public-link {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 15px 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    #public-link:hover {
+      background-color: #f8f8f8;
+    }
+
+    button[type="submit"] {
+      background-color: #5bc0de;
+      color: #fff;
+      border: none;  
+      padding: 15px 20px; 
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;  
+      font-size: 18px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #46b8da;
+    }
+
+    #message {
+      background-color: #ffffff;
+      color: #000000;
+      padding: 12px;
+      border: 2px solid #f60202;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="upload-form-container">
+    <% if (locals.message) { %>
+      <p id="message"><%= locals.message %></p>
+    <% } %>
+
+    <form action="/upload/files" method="post" enctype="multipart/form-data" id="upload-form">
+      <h1>Upload File</h1>
+
+      <label for="file">Choose File</label>
+      <input type="file" id="file" name="myfile" multiple required>
+
+      <p id="file-name"></p>
+
+      <button type="button" id="remove-file">Remove File</button>
+
+      <% if (locals.publicLink) { %>
+        <p id="public-link">Share File Link: <a href="<%= locals.publicLink %>" target="_blank" rel="noopener noreferrer"><%= locals.publicLink %></a></p>
+      <% } %>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const fileInput = document.getElementById('file');
+      const fileNameDisplay = document.getElementById('file-name');
+      const removeFileButton = document.getElementById('remove-file');
+
+      fileInput.addEventListener('change', function () {
+        handleFileSelect();
+      });
+
+      removeFileButton.addEventListener('click', function () {
+        fileInput.value = null;  
+        displayFileName();  
+      });
+
+      function handleFileSelect() {
+        displayFileName();
+      }
+
+      function displayFileName() {
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+          fileNameDisplay.textContent = `Selected file: ${files[0].name}`;
+          removeFileButton.style.display = 'inline-block';  
+        } else {
+          fileNameDisplay.textContent = '';  
+          removeFileButton.style.display = 'none';  
+        }
+      } 
+    });
+  </script>
+</body>
+</html>

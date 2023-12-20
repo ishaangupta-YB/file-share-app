@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sharing App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-size: 18px;
+        }
+
+        div.download {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        h4 {
+            color: #dc3545;
+        }
+
+        p {
+            color: #6c757d;
+        }
+
+        .download__meta {
+            margin-top: 30px;
+        }
+
+        small {
+            color: #6c757d;
+        }
+
+        .send-btn-container {
+            margin-top: 30px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body> 
+    <div class="download">
+        <% if(locals.error){ %>
+            <h4><%= locals.error %></h4>
+        <% } else { %>
+            <h2>Your file is ready to download</h2>
+            <% if(locals.timeLeft){ %>
+                <p><%= locals.timeLeft %></p>
+            <% } else { %>
+                <p>Link expires in 24 hours</p>
+            <% } %>
+                <div class="download__meta">
+                    <h4><%= filename %></h4>
+                    <small><%= filesize %></small>
+                    <p>Downloads: <%= downloadCount %></p>
+                </div>
+                <div class="send-btn-container">
+                    <a href="<%= downloadLink %>">Download file</a>
+                </div> 
+        <% } %>
+    </div>
+</body> 
+
+</html>
